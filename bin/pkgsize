@@ -1,0 +1,21 @@
+#!/usr/bin/env roboto
+#  Shows, under CRUX, the total size taken up by header files versus the entire
+#  package.  It has *very* little application outside a long-since-over
+#  discussion, but is a good illustration of small scripting in Roboto.
+
+(def header-vs.-total pkgname
+     (shadow 'sizes)
+     (= sizes
+        (acc ($ 'pkginfo '-l pkgname)
+             (split [\n] it)
+             (map (\ f -> prepend! f "/") it)
+             (select [[^/]$] it)
+             (apply (curry $ 'du '-cks) it)
+             (split [\n] it)
+             (map (\ l -> split [\t] l) it)))
+     (list (acc (select (\ l -> [\.h$] (l 1)) sizes)
+                (map (\ l -> to-i (l 0)) it)
+                (sum it))
+           (to-i ((sizes -1) 0))))
+
+(puts (map (\ l -> inspect (list l (header-vs.-total l))) argv))
