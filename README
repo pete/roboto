@@ -46,11 +46,11 @@ eliminate, as much as possible, the tedium I felt when writing code in
 many other languages, by introducing as much uniformity and transparency
 into the language as possible.
 
-[1] That person was usually Dan Yoder (http://github.com/dyoder), who
+[1] That person was usually Dan Yoder ( http://github.com/dyoder ), who
 has always had valuable input.  I almost named the language "Ocean" so
 that he would be forced to port Waves, and he is still upset with me for
 not going with a bytecode VM, I think.  Dan, are we cool yet?
 
-[2] Matthew King (http://github.com/automatthew), among others, has also
+[2] Matthew King ( http://github.com/automatthew ), among others, has also
 been chastising me for keeping the repository in Darcs, and I recently
 promised him a few others that I'd put *something* up.
