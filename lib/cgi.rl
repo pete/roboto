@@ -1,6 +1,8 @@
 ; Roboto's CGI library, such as it is.
 ; Working on calling C code for now, but this will look nicer when hashes are
 ; implemented.  Note the regex syntax:  brackets.
+; Also, I should probably point out that this library is powering a CGI
+; script or two that I'm using.
 (= pkgname 'CGI)
 
 (= qsplit (curry split [[&;]]))
