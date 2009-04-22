@@ -1,0 +1,43 @@
+#!/usr/bin/env roboto
+# A tiny little stack-based language that mostly piggy-backs on Roboto's native
+# operators (but assumes they all take two args).  It was written as a test of
+# Roboto's functors, which are called that because it is the shortest/least ugly
+# name I had heard or could come up with for "multiple dispatch functions" or
+# "polymorphic functions".  It's sort of like a crippled hybrid of dc and Forth.
+
+(= neg -)
+(def new-calc ()
+     (frdef calc (stack ())
+
+            ('.s) (fself 'stack)
+            ('stack) (printf "%s <\n" (inspect stack))
+            ('pop) ((. puts inspect ) (or (pop! stack) 'empty))
+            ('negate) (push! (- (pop! stack)) stack)
+            ('sum) (while (> (len stack) 1) (fself '+))
+            ('prod) (while (> (len stack) 1) (fself '*))
+            ('range) 
+                (bind ((end (pop! stack)) (i (- (pop! stack) 1)))
+                      (while (< i end)
+                             (push! (++ i) stack)))
+
+            ((symbol? l)) 
+                (push! (apply (eval l) (list (pop! stack) (pop! stack))) stack)
+            it (push! it stack)))
+(= calc (new-calc))
+
+(def run-line l
+     (= l (parse l))
+     (last (map calc l)))
+
+(def repl ()
+     (loop
+       (print "> ")
+       (= l (gets))
+
+       (when (nil? l) (puts "bye") (exit 0))
+
+       (run-line l)
+
+       ))
+
+(repl)
