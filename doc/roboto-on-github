@@ -1,0 +1,56 @@
+I am slowly cleaning up and moving code onto github.  In the near term,
+the only concrete plans are to move code written *in* Roboto[0] to
+github, rather than start moving Roboto itself over.
+
+There's some reasoning here, bear with me.
+
+This code is worse than alpha.  It's super-alpha.  Pre-alpha.  Negative
+alpha.  The Roboto interpreter, as it stands, has several problems:
+0.  It's still an interpreter, not yet a compiler; but have a look at
+    lib/cynara.rl, if want to see my escape plan.
+1.  It's slow.  See #1
+2.  It's buggy, and most bugs will not be fixed in the interpreter
+    version.
+3.  I like to change the syntax for lambdas once a week.  It's in pretty
+    heavy flux.
+4.  The error messages are unfriendly and sometimes curse at you or
+    sometimes are about the Time Cube, and often have no useful
+    information in them.
+
+Because I no longer work in an office full of language wonks, the amount
+of feedback I get on this language is quite a bit less than it was a few
+weeks ago.  I would like to hear what people think of the design of the
+language.  It's nearing the end of the exploratory phase, and the really
+real implementation will happen in my copious free time.  
+
+In other words, I've spent a long time looking at the language and
+saying "Writing this like X is ugly...What if I could write that like Y
+instead?" and pushing the code around.  Sometimes I'd go jabber at
+someone[1] for a while about the language, or drag them over to my desk and
+gesture wildly at my screen.  
+
+So this seems like as good a time as any[2] to start looking for broader
+input.  The current implementation, after bootstrapping the compiler, is
+going away, but I'll have to live with the the design decisions that are
+made before the compiler is written and things are set in stone.  
+
+So if you have any input on how the language ought to look, how a
+particular construct should behave, or something along those lines, I'd
+love to hear what you think.
+
+--
+[0] The name is based on the idea that, as coders, our entire livelihood
+is based on using machines to automate tasks that are tedious to people.
+Robots should be doing the work.  This language was designed to
+eliminate, as much as possible, the tedium I felt when writing code in
+many other languages, by introducing as much uniformity and transparency
+into the language as possible.
+
+[1] That person was usually Dan Yoder (http://github.com/dyoder), who
+has always had valuable input.  I almost named the language "Ocean" so
+that he would be forced to port Waves, and he is still upset with me for
+not going with a bytecode VM, I think.  Dan, are we cool yet?
+
+[2] Matthew King (http://github.com/automatthew), among others, has also
+been chastising me for keeping the repository in Darcs, and I recently
+promised him a few others that I'd put *something* up.
