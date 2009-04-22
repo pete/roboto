@@ -1,0 +1,25 @@
+; This is an ad-hoc of the Cynara library for Roboto.  It is not yet done.
+
+(import 'cynara)
+
+(Cynara 'declare 'char* 'getenv '(char*))
+(Cynara 'declare 'int 'printf '(char* ...))
+(Cynara 'declare 'int 'atoi '(char*))
+
+(= l 
+  '((return (printf "Hello, world!\n%s -- %d\n" (getenv "HOME") 99))))
+
+(= generated (Cynara 'generate l))
+
+(p
+(Cynara 'compile generated)
+)
+
+(p
+(= ptr (Cynara 'load-page "/tmp/cynara-tmp.bin"))
+; See the TODO in Cynara 'generate
+)
+
+(p
+(= f (Cynara 'pointer->function ptr))
+)
