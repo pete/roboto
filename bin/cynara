@@ -2,6 +2,8 @@
 
 (import 'cynara)
 
+; TODO:  The .h parser for Roboto is not done (or started) yet.  I think it will
+; be easier than it looks, but for now, it's all manual.
 (Cynara 'declare 'char* 'getenv '(char*))
 (Cynara 'declare 'int 'printf '(char* ...))
 (Cynara 'declare 'int 'atoi '(char*))
@@ -21,5 +23,5 @@
 )
 
 (p
-(= f (Cynara 'pointer->function ptr))
+(Cynara 'call-by-address ptr 6)
 )
