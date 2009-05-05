@@ -6,7 +6,9 @@
 ; some not so much:
 ;   1.  Better Hash support.  (This will improve a number of things in Roboto.)
 ;   2.  Better support for C structs (which Cynara is being used to bootstrap).
-;   3.  Not using the __robogenerated__ name for every generated function.
+;   3.  Not using the __robogenerated__ name for every generated function.  (So
+;   that we can put more than one function in a file, for the case where we're
+;   generating C for bootstrapping Roboto or precompiling a library.)
 ;   4.  Producing more things at intermediate steps, and remembering more about
 ;   the code that is generated, to make the compiler more flexible.
 ;   5.  Decoupling of the running image from the generated C code.  This will be
@@ -29,6 +31,7 @@
 ;   require rewriting some of lib/core.rl), and probably making macros into a
 ;   compile-time feature rather than run-time feature (which, again, will
 ;   involve some rewriting).
+;   10. More efficient memory management than one function per page.
 ; That they are numbered isn't meant to imply an order.
 (= pkgname 'Cynara)
 
@@ -37,10 +40,13 @@
 (merge! binding (bind (
                        (running-program (dl 'open' null-pointer (dl 'lazy)))
                        (decls (bind (sigs ())))
-                       ; Technical difficulties using magic to get the page
-                       ; size:
                        ;(page-size (C '(sysconf _SC_PAGESIZE)))
-                       (page-size 0x1000) ; It's usually 4k.
+                       ; Technical difficulties using magic to get the page
+                       ; size, so I just put it into the C runtime code.  ugh.
+                       (page-size
+                         (((ffi-bind () () 
+                                     (psf (ffi-func 'int 'rl_page_size ())))
+                           'psf)))
                        )))
 
 ; TODO:  There should be a way to find this out, worst case is parsing header
@@ -120,9 +126,9 @@
      ; TODO:  Do this correctly, figure out the c compiler, where to put tmp
      ; files, proper flags, etc.
      (File 'write "/tmp/cynara-tmp.c" s)
-     (and (sys "gcc -Os -c -fPIC /tmp/cynara-tmp.c -o /tmp/cynara-tmp.o")
-          (sys (+ "objcopy -O binary -j .text /tmp/cynara-tmp.o "
-                  "/tmp/cynara-tmp.bin"))))
+     (and (== 0 (sys "gcc -Os -c -fPIC /tmp/cynara-tmp.c -o /tmp/cynara-tmp.o"))
+          (== 0 (sys (+ "objcopy -O binary -j .text /tmp/cynara-tmp.o "
+                  "/tmp/cynara-tmp.bin")))))
 
 (def call-by-address (addr *argv)
      (deref-obj (raw-call-by-address addr (ref-to argv))))
@@ -136,8 +142,9 @@
             ; ignore.
             ; ...
             ; ...story of my life.
-            (fsize (len (File 'read fname)))
+            (fsize (acc (File 'read fname) (and it (len it))))
            )
+
            (= code-size (+ fsize (- page-size (% fsize page-size))))
            (= page (C 'memalign page-size code-size))
            (if (null-pointer? page) (fatal! "Couldn't allocate memory!"))
