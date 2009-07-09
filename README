@@ -1,13 +1,16 @@
 I am slowly cleaning up and moving code onto github.  In the near term,
 the only concrete plans are to move code written *in* Roboto[0] to
-github, rather than start moving Roboto itself over.
+github, rather than start moving Roboto itself over.  When Roboto is at
+the point that it is written in itself, then it will get pushed.  The
+current plan 
 
 There's some reasoning here, bear with me.
 
 This code is worse than alpha.  It's super-alpha.  Pre-alpha.  Negative
 alpha.  The Roboto interpreter, as it stands, has several problems:
-0.  It's still an interpreter, not yet a compiler; but have a look at
-    lib/cynara.rl, if want to see my escape plan.
+0.  It's still an interpreter, not yet a compiler; it is still a
+    prototype.  But if you want to know the escape plan, have a look at
+    lib/cynara.rl and the Pez project.
 1.  It's slow.  See #1
 2.  It's buggy, and most bugs will not be fixed in the interpreter
     version.
