@@ -1,0 +1,31 @@
+; A demonstration of OO in Roboto
+; Class definition:
+(= Timer (Class 'new 
+                (bind ()
+                      (def new upto 
+                           (bind ((upto upto) (ticks 0))))
+                      (def tick ()
+                           (+= ticks 1)
+                           (%= ticks upto)))))
+; Instantiation
+(= t (Timer 'new 10))
+
+; Method calls
+((t 'tick))
+
+; Instance (singleton) methods:
+(t 'set 'rolled? (lambda () (== ticks 0)))
+
+; Overrides:
+(t '(def tick () (bind (s nil) (= s (super)) (if rolled? "Ding" ticks))))
+
+; Re-opening classes:
+(Timer '(def upto= n (= upto n))))
+(t 'upto= 5)
+
+; "Including" modules.
+(Timer 'merge! File)
+(t 'readlines "/etc/passwd") ; WHY?!
+
+; Multiple inheritance:
+(= FileTimer (merge Timer File)
