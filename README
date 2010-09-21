@@ -1,3 +1,35 @@
+Note:  This README is out of date.  Roboto has settled and, for the most
+part stabilized.  The Cynara library has died of a severe case of
+maldesign (it was really an odd way of doing things to begin with, but
+great fun nonetheless), and work on the compiler proper has started.
+I've nearly settled on a final name for the language (although I am
+happy to hear any suggestions), and will start pushing to it as soon as
+simple lambdas compile properly and I've finalized the approach for the
+top-level.  The compiler itself is so far written in a mix of Roboto and
+C, and after it can compile itself, it the Roboto parts will gradually
+subsume the C parts.
+
+The intermediate language is C (so the compilation process will take
+Roboto source, produce C source, and enlist a C compiler to produce
+machine code).  This allows for the language to be machine- and
+ABI-independent and leave the rest to the C compiler.  I hope to support
+at least GCC and Plan 9's 9c, although initially only GCC will be
+supported.
+
+(As tempted as I am to make Go the intermediate language, there are a
+couple of problems:  Go is still a moving target at time of writing, and
+the language's design goals explicitly exclude making interoperability
+with C a priority, which is a priority for Roboto.)
+
+I am fairly interested in a non-autotools build system, provided there
+aren't any horrible extra compile-time dependencies.  (Libtool is almost
+too much for me, and CMake and SCons are right out.)  I am using
+plain Makefiles for now; suggestions are welcome.
+
+The original README follows.
+
+---
+
 I am slowly cleaning up and moving code onto github.  In the near term,
 the only concrete plans are to move code written *in* Roboto[0] to
 github, rather than start moving Roboto itself over.  When Roboto is at
